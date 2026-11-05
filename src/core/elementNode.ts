@@ -1940,7 +1940,7 @@ export class ElementNode {
   }
 }
 
-for (const key of LightningRendererNumberProps) {
+LightningRendererNumberProps.forEach((key) => {
   Object.defineProperty(ElementNode.prototype, key, {
     get(): number {
       return this.lng[key];
@@ -1949,9 +1949,9 @@ for (const key of LightningRendererNumberProps) {
       this._sendToLightningAnimatable(key, v);
     },
   });
-}
+});
 
-for (const key of LightningRendererNonAnimatingProps) {
+LightningRendererNonAnimatingProps.forEach((key) => {
   Object.defineProperty(ElementNode.prototype, key, {
     get(): unknown {
       return this.lng[key];
@@ -1960,7 +1960,7 @@ for (const key of LightningRendererNonAnimatingProps) {
       this.lng[key] = v;
     },
   });
-}
+});
 
 export function createRawShaderAccessor<T>(key: keyof StyleEffects) {
   return {

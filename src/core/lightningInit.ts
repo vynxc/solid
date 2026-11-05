@@ -11,6 +11,33 @@ export let renderer: lng.RendererMain | DOMRendererMain;
 
 export const getRenderer = () => renderer;
 
+/**
+ * A host-provided renderer implementation (a native platform backend, for
+ * example). When set, \`startLightningRenderer\` constructs it in place of the
+ * bundled WebGL renderer. This is a public, supported seam: the host installs
+ * the factory before the app calls \`createRenderer()\`; no module patching or
+ * source rewriting is involved.
+ */
+export type RendererFactory = (
+  settings: lng.RendererMainSettings | DomRendererMainSettings,
+  rootId: string | HTMLElement,
+) => lng.RendererMain;
+
+let rendererFactory: RendererFactory | undefined;
+
+/**
+ * Install (or clear, with \`undefined\`) the renderer factory used by
+ * \`createRenderer()\`. Call before the app creates its renderer.
+ */
+export function setRendererFactory(factory: RendererFactory | undefined): void {
+  rendererFactory = factory;
+}
+
+/** The installed renderer factory, or undefined for the bundled one. */
+export function getRendererFactory(): RendererFactory | undefined {
+  return rendererFactory;
+}
+
 // @solidtv/renderer 2.0 has one engine (WebGL) and one text engine (SDF), so
 // these settings are gone; apps written for 1.x still pass them.
 const REMOVED_SETTINGS = ['renderEngine', 'fontEngines'];
@@ -88,6 +115,11 @@ export function startLightningRenderer(
   if (enableDomRenderer) {
     // Its stage has its own (inert) shManager.
     renderer = new DOMRendererMain(settings, rootId);
+  } else if (rendererFactory !== undefined) {
+    // A host backend (native platform, headless harness). It owns its own
+    // frame/idle signalling and exposes the renderer contract the framework
+    // reads; the bundled WebGL renderer is not constructed at all.
+    renderer = rendererFactory(settings, rootId);
   } else {
     const rendererMain = new lng.RendererMain(
       settings as lng.RendererMainSettings,
