@@ -1,3 +1,6 @@
+declare const SOLIDTV_DOM_RENDERING: boolean | undefined;
+declare const SOLIDTV_DISABLE_SHADERS: boolean | undefined;
+
 export const isDev = !!(import.meta.env && import.meta.env.DEV);
 
 /** Whether the DOM renderer is used instead of `@solidtv/renderer` */
