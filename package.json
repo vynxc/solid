@@ -66,7 +66,7 @@
     "build": "rm -rf dist && pnpm run tsc && cp jsx-runtime.d.ts dist/",
     "tsc": "tsc && tsc -p tests/tsconfig.contract.json",
     "watch": "tsc -w",
-    "prepare": "husky",
+    "prepare": "husky && npm run build",
     "prepack": "pnpm run build",
     "release": "release-it",
     "test:browser": "vitest --config=vitest.browser.config.ts",
