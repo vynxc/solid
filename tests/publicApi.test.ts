@@ -24,7 +24,7 @@ import * as focusManager from '@solidtv/solid/focusManager';
 const names = (mod: object) => Object.keys(mod).sort();
 
 v.describe('Exports: runtime export names of every entry point', () => {
-  v.test('@solidtv/solid (src/index.ts): 97 names', () => {
+  v.test('@solidtv/solid (src/index.ts): 99 names', () => {
     v.expect(names(main)).toEqual([
       'Config',
       'DOMNode',
@@ -71,6 +71,7 @@ v.describe('Exports: runtime export names of every entry point', () => {
       'flattenStyles',
       'getElementScreenRect',
       'getRenderer',
+      'getRendererFactory',
       'getWebglSupportedVersions',
       'hasFocus',
       'hexColor',
@@ -114,6 +115,7 @@ v.describe('Exports: runtime export names of every entry point', () => {
       'setActiveElement',
       'setActiveElementCore',
       'setProp',
+      'setRendererFactory',
       'setTasksEnabled',
       'shaderAccessor',
       'spliceItem',
