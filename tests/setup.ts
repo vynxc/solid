@@ -3,6 +3,12 @@ import * as v from 'vitest';
 
 lng.Config.domRendererEnabled = true;
 
+// jsdom's frame timestamp can have a different origin from performance.now().
+// Keep real frame scheduling/cancellation, but use the animation's start clock.
+const requestFrame = globalThis.requestAnimationFrame;
+globalThis.requestAnimationFrame = (callback) =>
+  requestFrame(() => callback(performance.now()));
+
 globalThis.ResizeObserver = class MockResizeObserver {
   constructor() {}
   observe() {}

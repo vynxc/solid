@@ -255,23 +255,25 @@ const updateFocusPath = (
   const fp: ElementNode[] = [];
   while (current) {
     if (
-      !current.states.has(Config.focusStateKey) ||
+      !current.states?.has(Config.focusStateKey) ||
       current === currentFocusedElm
     ) {
-      current.states.add(Config.focusStateKey);
-      current.onFocus?.call(
-        current,
-        currentFocusedElm,
-        prevFocusedElm,
-        current,
-      );
-      current.onFocusChanged?.call(
-        current,
-        true,
-        currentFocusedElm,
-        prevFocusedElm,
-        current,
-      );
+      current.states?.add(Config.focusStateKey);
+      if (typeof current.onFocus === 'function')
+        current.onFocus.call(
+          current,
+          currentFocusedElm,
+          prevFocusedElm,
+          current,
+        );
+      if (typeof current.onFocusChanged === 'function')
+        current.onFocusChanged.call(
+          current,
+          true,
+          currentFocusedElm,
+          prevFocusedElm,
+          current,
+        );
     }
     fp.push(current);
     current = current.parent;
@@ -281,15 +283,17 @@ const updateFocusPath = (
   for (let i = 0; i < prevFp.length; i++) {
     const elm = prevFp[i]!;
     if (fp.indexOf(elm) === -1) {
-      elm.states.remove(Config.focusStateKey);
-      elm.onBlur?.call(elm, currentFocusedElm, prevFocusedElm!, elm);
-      elm.onFocusChanged?.call(
-        elm,
-        false,
-        currentFocusedElm,
-        prevFocusedElm,
-        elm,
-      );
+      elm.states?.remove(Config.focusStateKey);
+      if (typeof elm.onBlur === 'function')
+        elm.onBlur.call(elm, currentFocusedElm, prevFocusedElm!, elm);
+      if (typeof elm.onFocusChanged === 'function')
+        elm.onFocusChanged.call(
+          elm,
+          false,
+          currentFocusedElm,
+          prevFocusedElm,
+          elm,
+        );
     }
   }
 

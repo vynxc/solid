@@ -241,7 +241,9 @@ const parseAndAssignShaderProps = (
 };
 
 const assignEffects = (v: StyleEffects, props: Record<string, unknown>) => {
-  if (v.rounded) props.radius = v.rounded.radius;
+  if (v.rounded != null) {
+    props.radius = typeof v.rounded === 'object' ? v.rounded.radius : v.rounded;
+  }
   if (v.borderRadius) props.radius = v.borderRadius;
   for (const k of EFFECT_SHADER_KEYS) {
     if (v[k]) parseAndAssignShaderProps(k, v[k], props);
@@ -1115,11 +1117,13 @@ export class ElementNode {
           children[i] = children[i - 1]!;
         }
         children[index] = node as ElementNode;
+        if (this.rendered && isElementNode(node)) node.render(true);
         return;
       }
     }
 
     this.children.push(node as ElementNode);
+    if (this.rendered && isElementNode(node)) node.render(true);
   }
 
   removeChild(node: ElementNode | ElementText | TextNode) {

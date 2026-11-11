@@ -61,6 +61,17 @@ v.describe('border and shadow shader props', () => {
     });
   });
 
+  v.test.each([0, 12, { radius: 8 }])(
+    'rounded effects serialize %j',
+    (rounded) => {
+      const node = new ElementNode('view');
+      node.effects = { rounded };
+      v.expect(bagOf(node).radius).toBe(
+        typeof rounded === 'number' ? rounded : rounded.radius,
+      );
+    },
+  );
+
   v.test('only own keys are written, inherited ones are not', () => {
     const node = new ElementNode('view');
     const border = Object.create({ color: 0xffffffff }) as { width: number };
