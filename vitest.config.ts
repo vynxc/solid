@@ -31,6 +31,7 @@ export default defineConfig(() => ({
     environment: 'jsdom',
   },
   resolve: {
+    dedupe: ['solid-js'],
     conditions: ['@solidtv/source', 'browser', 'development'],
     alias: {
       // @solidjs/router resolves to untranspiled .jsx under the

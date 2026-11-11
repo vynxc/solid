@@ -1,5 +1,5 @@
 import * as v from 'vitest';
-import { ElementNode } from '@solidtv/solid';
+import { activeElement, ElementNode } from '@solidtv/solid';
 import { setActiveElementCore } from '../src/core/focusManager.js';
 import { mount } from './contract-focus-helpers.js';
 
@@ -23,13 +23,14 @@ v.test(
     b.onFocus = false as never;
     b.onFocusChanged = 'pending' as never;
     b.onBlur = {} as never;
+    const previous = activeElement();
     v.expect(() => {
       setActiveElementCore(a);
       setActiveElementCore(b);
       setActiveElementCore(a);
     }).not.toThrow();
     v.expect(onFocus).toHaveBeenCalledTimes(1);
-    v.expect(onFocusChanged).toHaveBeenCalledWith(true, a, undefined, a.parent);
+    v.expect(onFocusChanged).toHaveBeenCalledWith(true, a, previous, a.parent);
     dispose();
   },
 );
