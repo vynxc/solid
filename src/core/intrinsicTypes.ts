@@ -48,7 +48,7 @@ export interface Effects {
   radialGradient?: Partial<ShaderRadialGradientProps>;
   holePunch?: Partial<ShaderHolePunchProps>;
   shadow?: Partial<ShaderShadowProps>;
-  rounded?: Partial<ShaderRoundedProps>;
+  rounded?: number | Partial<ShaderRoundedProps>;
   borderRadius?: Partial<BorderRadius>;
   border?: Partial<ShaderBorderProps>;
   borderTop?: Partial<ShaderBorderProps>;

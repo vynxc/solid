@@ -34,9 +34,6 @@ export default {
     parent.insertChild(node, anchor);
 
     if (node instanceof ElementNode) {
-      if (node.parent!.rendered) {
-        node.render(true);
-      }
       if (prevParent !== undefined) {
         enqueueDelete(node, 1);
       }
